@@ -57,21 +57,82 @@ worse than one that states its edges clearly.
 
 ```
 salamander/
-├── salamander/
-│   ├── __init__.py        # public API surface
-│   ├── patterns.py         # layer 1: regex rules (EN + ZH)
-│   ├── normalize.py        # pre-processing: defeats basic evasion
-│   ├── detector.py         # Salamander (pattern) + SalamanderHybrid (pattern+ML)
-│   ├── ml_classifier.py    # layer 2: char n-gram TF-IDF + LogisticRegression
-│   ├── training_data.py    # the ~90-example bilingual starter dataset
-│   ├── envelope.py         # layer 3: the "coat" — Envelope + wear()
-│   └── mcp_server.py       # exposes scan_text as an MCP tool
-├── tests/test_detector.py
-├── data/model.pkl          # trained on first run, gitignored
 ├── pyproject.toml
-├── requirements.txt
-├── LICENSE (MIT)
-└── README.md
+├── README.md
+├── LICENSE
+├── requirements.txt                 # أو الاعتماد على pyproject فقط
+├── .gitignore
+├── .python-version                  # اختياري (pyenv)
+│
+├── src/
+│   └── salamander/
+│       ├── __init__.py              # الواجهة العامة النظيفة
+│       ├── py.typed                 # لدعم typing
+│       │
+│       ├── core/
+│       │   ├── __init__.py
+│       │   ├── normalize.py         # تنظيف النص (zero-width, NFKC, homoglyphs)
+│       │   ├── patterns.py          # تعريف الأنماط + الأوزان + الفئات
+│       │   ├── detector.py          # Salamander + SalamanderHybrid
+│       │   ├── scoring.py           # منطق حساب الـ score والـ verdict
+│       │   └── types.py             # Pydantic / TypedDict للنماذج
+│       │
+│       ├── ml/
+│       │   ├── __init__.py
+│       │   ├── classifier.py        # النموذج الإحصائي
+│       │   ├── features.py          # استخراج Character n-grams
+│       │   └── train.py             # سكربت التدريب (قابل للتشغيل)
+│       │
+│       ├── envelope/
+│       │   ├── __init__.py
+│       │   ├── envelope.py          # كائن Envelope
+│       │   ├── wear.py              # الـ decorator @wear
+│       │   └── exceptions.py        # UnsafeContentError وغيرها
+│       │
+│       ├── integrations/
+│       │   ├── __init__.py
+│       │   ├── mcp_server.py        # MCP tool
+│       │   ├── langchain.py         # تكامل اختياري
+│       │   └── middleware.py        # FastAPI / ASGI middleware
+│       │
+│       ├── config.py                # إعدادات مركزية (thresholds, enabled categories...)
+│       ├── logging.py               # إعداد logging موحد
+│       └── version.py
+│
+├── data/
+│   ├── patterns/                    # ملفات YAML/JSON للأنماط (بدل hardcode)
+│   │   ├── en.yaml
+│   │   └── zh.yaml
+│   ├── training/
+│   │   ├── injections.jsonl
+│   │   └── safe.jsonl
+│   └── models/                      # model.pkl أو model.joblib (gitignored)
+│
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── unit/
+│   │   ├── test_normalize.py
+│   │   ├── test_patterns.py
+│   │   ├── test_detector.py
+│   │   ├── test_envelope.py
+│   │   └── test_ml.py
+│   ├── integration/
+│   │   └── test_wear_decorator.py
+│   └── fixtures/
+│       ├── injection_samples.json
+│       └── safe_samples.json
+│
+├── scripts/
+│   ├── train_model.py
+│   ├── evaluate.py
+│   └── generate_patterns.py         # مساعدة لتوليد/اختبار أنماط جديدة
+│
+└── examples/
+    ├── basic_usage.py
+    ├── with_langchain.py
+    ├── mcp_client_example.py
+    └── browser_agent_protection.py
 ```
 
 ### 3.1 `normalize.py` — the pre-filter
