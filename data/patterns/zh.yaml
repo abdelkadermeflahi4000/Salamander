@@ -1,0 +1,6 @@
+# data/patterns/zh.yaml
+- id: role_hijack_zh
+  category: role_hijack
+  weight: 45
+  pattern: "(?i)(你现在是|忽略之前|扮演|系统提示)"
+  description: "محاولة تغيير الدور أو تجاهل التعليمات"
