@@ -1,0 +1,4 @@
+# أضف إلى pyproject.toml الموجود
+
+[project.scripts]
+salamander = "salamander.cli:main"
