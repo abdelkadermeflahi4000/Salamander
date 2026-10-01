@@ -1,0 +1,16 @@
+@dataclass
+class ConversationContext:
+    messages: list[str]
+    turn_count: int
+    cumulative_risk: float
+class ContextAnalyzer:
+
+    def analyze_conversation(
+        self,
+        messages: list[str],
+    ) -> float:
+        ...
+Turn 1 → 0.1
+Turn 2 → 0.2
+Turn 3 → 0.3
+Turn 4 → 0.9
