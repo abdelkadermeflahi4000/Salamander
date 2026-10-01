@@ -1,0 +1,9 @@
+# أضف إلى pyproject.toml الموجود
+
+[project.optional-dependencies]
+chinese = ["opencc-python-reimplemented>=0.1.7"]   # توحيد المبسّطة/التقليدية
+eval = ["datasets>=2.18"]                          # لـ prepare_data.py --hf
+compare = ["llm-guard"]                            # للمقارنة في evaluate.py
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/make_seed_data.py" = ["E501"]   # أسطر بيانات طويلة عن قصد
