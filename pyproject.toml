@@ -1,24 +1,128 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "salamander"
+name = "salamander-guard"
 version = "0.1.0"
 description = "焰甲 Salamander — a universal trust envelope any AI agent can wear before touching untrusted content. Prompt-injection detection for English + Chinese."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.9"
 authors = [
-    { name = "Kader" }
+    { name = "Abdelkader Meflahi", email = "abdelkadermeflahi4000@gmail.com" }
 ]
-keywords = ["ai-security", "prompt-injection", "llm-security", "agent-security", "mcp", "salamander"]
+keywords = [
+    "ai-security", 
+    "prompt-injection", 
+    "llm-security", 
+    "agent-security", 
+    "mcp", 
+    "salamander",
+    "content-safety",
+    "prompt-guard"
+]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "scikit-learn>=1.3.0",
+    "mcp>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.0.0",
+]
+test = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+]
+fastapi = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+]
+langchain = [
+    "langchain>=0.0.300",
+    "langchain-community>=0.0.1",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=1.3.0",
+]
+all = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.0.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "langchain>=0.0.300",
+    "langchain-community>=0.0.1",
 ]
 
 [project.urls]
-Homepage = "https://github.com/YOUR_USERNAME/salamander"
+Homepage = "https://github.com/abdelkadermeflahi4000/Salamander"
+Repository = "https://github.com/abdelkadermeflahi4000/Salamander.git"
+Issues = "https://github.com/abdelkadermeflahi4000/Salamander/issues"
+Documentation = "https://github.com/abdelkadermeflahi4000/Salamander#readme"
+
+[project.scripts]
+salamander = "salamander.cli:main"
+
+[tool.setuptools]
+packages = ["Salamander"]
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+select = [
+    "E", "F", "W", "C", "I", "N", "B", "A", "D", "UP", "S",
+]
+ignore = [
+    "D100", "D104", "D105",
+    "E501",  # line-too-long (black handles this)
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -q --strict-markers --cov=Salamander --cov-report=term-missing --cov-report=html"
+markers = [
+    "unit: Unit tests for individual modules",
+    "integration: Integration tests for multiple modules",
+    "slow: Tests that take significant time to run",
+]
