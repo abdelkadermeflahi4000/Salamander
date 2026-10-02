@@ -1,0 +1,52 @@
+name: 🌌 Quantum Swarm - Self-Awakening
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # يعمل كل 6 ساعات تلقائياً
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # يمكن تشغيله يدوياً أيضاً
+
+jobs:
+  awaken:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install nostr-sdk pynacl cryptography requests
+          pip install -e . || true  # لمشروعك Salamander
+      
+      - name: 🧠 Setup Ollama (or use HF)
+        run: |
+          # في GitHub Actions، لا يمكننا تشغيل Ollama بسهولة
+          # سنستخدم Hugging Face Inference API كبديل
+          echo "Using Hugging Face Inference API"
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      
+      - name: 🌌 Awaken the Quantum Swarm
+        run: python quantum_swarm.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          NOSTR_RELAYS: "wss://relay.damus.io,wss://nos.lol,wss://relay.nostr.band"
+      
+      - name: 💾 Commit memory updates
+        run: |
+          git config user.name "Quantum Swarm Bot"
+          git config user.email "swarm@quantum.ai"
+          git add memory.json evolution.log || true
+          git diff --staged --quiet || git commit -m "🧠 Swarm memory update [auto]"
+          git push || true
