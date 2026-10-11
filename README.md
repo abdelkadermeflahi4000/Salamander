@@ -298,3 +298,23 @@ pip install -r requirements.txt   # scikit-learn + mcp
 MIT — see [LICENSE](LICENSE). The name and any project-specific
 branding (焰甲 / Salamander as used here) are not separately restricted
 beyond the license text itself.
+
+# 焰甲 Salamander
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Status: Alpha](https://img.shields.io/badge/status-alpha-orange.svg)](https://github.com/abdelkadermeflahi4000/Salamander)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Salamander-black?logo=github)](https://github.com/abdelkadermeflahi4000/Salamander)
+
+**A lightweight trust envelope for AI agents.**
+
+Salamander lets any agent (Claude, GPT, DeepSeek, Qwen, LangChain, raw scripts…) safely handle untrusted content — web pages, emails, files, tool results — without getting burned by prompt injection.
+
+Supports **English + Chinese**.
+
+---
+
+## Quick Start
+
+```bash
+pip install -e .
