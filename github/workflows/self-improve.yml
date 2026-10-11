@@ -1,0 +1,42 @@
+name: Self Improve (LLM Red Team)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install
+        run: pip install -e .
+
+      - name: Red team (templates — always works)
+        run: python scripts/red_team.py
+
+      - name: Red team (LLM — optional)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_MODEL: gpt-4o-mini
+        run: python scripts/red_team_llm.py
+        continue-on-error: true
+
+      - name: Blue team — find gaps
+        run: python scripts/blue_team.py
+
+      - name: Evaluate
+        run: python scripts/evaluate.py
+        continue-on-error: true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-improve-${{ github.run_id }}
+          path: data/attacks/generated/
